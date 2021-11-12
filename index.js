@@ -23,6 +23,7 @@ async function run() {
         console.log('db connected successfully');
         const database = client.db('DazzleWatch');
         const productCollection = database.collection('products');
+        const reviewCollection = database.collection('reviews');
 
         // (API) GET ALL PRODUCT
         app.get('/products', async (req, res) => {
@@ -38,6 +39,14 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await productCollection.findOne(query);
             // console.log('product details-', result);
+            res.json(result);
+        })
+
+        //(API) GET REVIEWS
+        app.get('/reviews', async (req, res) => {
+            const query = {};
+            const cursor = reviewCollection.find(query);
+            const result = await cursor.toArray();
             res.json(result);
         })
     }
