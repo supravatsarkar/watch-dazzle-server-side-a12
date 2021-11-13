@@ -21,6 +21,7 @@ async function run() {
         const database = client.db('DazzleWatch');
         const productCollection = database.collection('products');
         const reviewCollection = database.collection('reviews');
+        const orderCollection = database.collection('orders');
 
         // (API) GET ALL PRODUCT
         app.get('/products', async (req, res) => {
@@ -44,6 +45,20 @@ async function run() {
             const query = {};
             const cursor = reviewCollection.find(query);
             const result = await cursor.toArray();
+            res.json(result);
+        })
+
+        app.post('/orders', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            console.log(result);
+            res.json(result);
+        })
+
+        app.get('/orders', async (req, res) => {
+            const email = req.query.email;
+            const filter = { email: email };
+            const result = await orderCollection.find(filter).toArray();
             res.json(result);
         })
     }
