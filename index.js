@@ -91,6 +91,20 @@ async function run() {
             const options = { upsert: true };
             const result = await userCollection.insertOne(user, filter, options);
         })
+
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const result = await userCollection.findOne(query);
+            if (result?.role === 'admin') {
+                // result.role = true;
+                res.json({ admin: true });
+            } else {
+                res.json({ admin: false });
+            }
+            console.log(result);
+
+        })
     }
     finally {
         // client.close();
