@@ -48,6 +48,15 @@ async function run() {
             res.json(result);
         })
 
+        //add review api
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            console.log(review)
+            const result = await reviewCollection.insertOne(review);
+            console.log(result);
+            res.json(result);
+        })
+
         // book order api 
         app.post('/orders', async (req, res) => {
             const order = req.body;
