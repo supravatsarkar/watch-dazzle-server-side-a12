@@ -48,6 +48,7 @@ async function run() {
             res.json(result);
         })
 
+        // book order api 
         app.post('/orders', async (req, res) => {
             const order = req.body;
             const result = await orderCollection.insertOne(order);
@@ -55,10 +56,20 @@ async function run() {
             res.json(result);
         })
 
+        // order filter by email 
         app.get('/orders', async (req, res) => {
             const email = req.query.email;
             const filter = { email: email };
             const result = await orderCollection.find(filter).toArray();
+            res.json(result);
+        })
+
+        // delete order api
+        app.delete('/orders', async (req, res) => {
+            const id = req.query.id;
+            const query = { _id: ObjectId(id) }
+            const result = await orderCollection.deleteOne(query);
+            console.log(result);
             res.json(result);
         })
     }
