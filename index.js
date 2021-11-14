@@ -4,6 +4,7 @@ const port = process.env.PORT || 5000;
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
+const { query } = require('express');
 require('dotenv').config();
 
 
@@ -92,6 +93,7 @@ async function run() {
             const result = await userCollection.insertOne(user, filter, options);
         })
 
+        // check admin api 
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
@@ -105,6 +107,23 @@ async function run() {
             console.log(result);
 
         })
+
+        // get all order api 
+        app.get('/allOrders', async (req, res) => {
+            const result = await orderCollection.find({}).toArray();
+            console.log('hit all orders');
+            res.json(result);
+        })
+
+        app.put('/allOrders/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = { $set: { status: 'Shipped' } }
+            const result = await orderCollection.updateOne(filter, updateDoc);
+            console.log('status', result);
+            res.json(result);
+        })
+
     }
     finally {
         // client.close();
