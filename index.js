@@ -25,6 +25,15 @@ async function run() {
         const orderCollection = database.collection('orders');
         const userCollection = database.collection('users');
 
+
+        // post product api 
+        app.post('/products', async (req, res) => {
+            const product = req.body
+            // console.log(product);
+            const result = await productCollection.insertOne(product);
+            res.json(result);
+        })
+
         // (API) GET ALL PRODUCT
         app.get('/products', async (req, res) => {
             const query = {};
@@ -41,6 +50,8 @@ async function run() {
             // console.log('product details-', result);
             res.json(result);
         })
+
+
 
         //(API) GET REVIEWS
         app.get('/reviews', async (req, res) => {
