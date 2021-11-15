@@ -34,6 +34,20 @@ async function run() {
             res.json(result);
         })
 
+        //put product api
+        app.put('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const product = req.body;
+            const filter = { _id: ObjectId(id) };
+            console.log(id, product);
+            const updateDoc = {
+                $set: product
+            };
+            const result = await productCollection.updateOne(filter, updateDoc);
+
+            res.json(result);
+        })
+
         // (API) GET ALL PRODUCT
         app.get('/products', async (req, res) => {
             const query = {};
@@ -55,9 +69,9 @@ async function run() {
         //(API) GET SINGLE PRODUCT
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
+            console.log('product details-', id);
             const query = { _id: ObjectId(id) };
             const result = await productCollection.findOne(query);
-            // console.log('product details-', result);
             res.json(result);
         })
 
