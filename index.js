@@ -104,6 +104,17 @@ async function run() {
             const result = await userCollection.insertOne(user, filter, options);
         })
 
+        // make admin api
+        app.put('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            console.log('make admin-', email);
+            const filter = { email: email };
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await userCollection.updateOne(filter, updateDoc);
+            console.log(result);
+            res.json(result);
+        })
+
         // check admin api 
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
