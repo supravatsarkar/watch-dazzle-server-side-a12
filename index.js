@@ -42,6 +42,16 @@ async function run() {
             res.json(result);
         })
 
+        // delete product api
+        app.delete('/products', async (req, res) => {
+            const id = req.query.id;
+            const query = { _id: ObjectId(id) }
+            const result = await productCollection.deleteOne(query);
+            // console.log(result);
+            res.json(result);
+        })
+
+
         //(API) GET SINGLE PRODUCT
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
@@ -105,7 +115,7 @@ async function run() {
         })
 
         // make admin api
-        app.put('/users/:email', async (req, res) => {
+        app.put('/users/makeAdmin/:email', async (req, res) => {
             const email = req.params.email;
             console.log('make admin-', email);
             const filter = { email: email };
@@ -134,6 +144,7 @@ async function run() {
         app.get('/allOrders', async (req, res) => {
             const result = await orderCollection.find({}).toArray();
             console.log('hit all orders');
+            console.log(result);
             res.json(result);
         })
 
